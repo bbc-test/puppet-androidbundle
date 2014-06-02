@@ -52,7 +52,8 @@ $download_url = 'http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64
 
   exec { 'add paths' :
     command => "/bin/sh -c 'echo PATH=\"\$PATH:/opt/adt/sdk/tools:/opt/adt/sdk/platform-tools\" >> /etc/profile'",
-    require => [Exec['mv eclipse'],Exec['mv sdk']]
+    require => [Exec['mv eclipse'],Exec['mv sdk']],
+    onlyif => "/bin/sh -c 'echo $PATH | grep adt'"
   }
 
   if $lsbdistrelease == 14.04 {
