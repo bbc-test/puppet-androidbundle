@@ -35,8 +35,19 @@ class androidbundle() {
   }
 
 
-  exec { '/bin/chown -R vagrant:vagrant /opt/adt/' :
+  exec { 'chown' :
+    command => "/bin/chown -R vagrant:vagrant /opt/adt/",
     require => Exec["tidy"]
+  }
+
+  exec { 'chmod' :
+      command => "/bin/chmod -R 755 /opt/adt/",
+      require => Exec['chown']
+  }
+
+  exec { 'add paths' :
+    command => "/bin/sh -c 'echo PATH=\"\$PATH:/opt/adt/sdk/tools:/opt/adt/sdk/platform-tools\" >> /etc/profile'",
+    require => [Exec['mv eclipse'],Exec['mv sdk']]
   }
 
   if $lsbdistrelease == 14.04 {
