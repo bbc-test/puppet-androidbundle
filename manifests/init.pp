@@ -6,7 +6,8 @@
 #
 # Paul Carey <paul.carey@ignition.it>
 #
-class androidbundle() {
+class androidbundle(
+$download_url = 'http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip') {
 
   package { "unzip" : }
 
@@ -14,7 +15,7 @@ class androidbundle() {
     ensure => present,
     extension => "zip",
     checksum => false,
-    url    => 'http://dl.google.com/android/adt/22.6.2/adt-bundle-linux-x86_64-20140321.zip',
+    url    => $download_url,
     target => '/opt/adt',
     timeout => 1800,
     require => Package["unzip"]
