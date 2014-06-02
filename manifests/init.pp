@@ -29,7 +29,18 @@ class androidbundle() {
     require => Archive["adt"],
   }
 
-  exec { "/bin/rmdir /opt/adt/adt-bundle-linux-x86_64-20140321" :
+  exec { "tidy" :
+      command => "/bin/rmdir /opt/adt/adt-bundle-linux-x86_64-20140321",
       require => [Exec['mv eclipse'],Exec['mv sdk']]
   }
+
+
+  exec { '/bin/chown -R vagrant:vagrant /opt/adt/' :
+    require => Exec["tidy"]
+  }
+
+  if $lsbdistrelease == 14.04 {
+    ensure_packages(["libc6-i386", "lib32stdc++6", "lib32gcc1", "lib32ncurses5", "lib32z1"])
+  }
+
 }
